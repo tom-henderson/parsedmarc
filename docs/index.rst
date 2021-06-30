@@ -147,6 +147,7 @@ For example
    [s3]
    bucket = my-bucket
    path = parsedmarc
+   hive_partitions = True
 
 The full set of configuration options are:
 
