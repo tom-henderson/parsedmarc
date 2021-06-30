@@ -12,7 +12,7 @@ logger = logging.getLogger("parsedmarc")
 class S3Client(object):
     """A client for a Amazon S3"""
 
-    def __init__(self, bucket_name, bucket_path):
+    def __init__(self, bucket_name, bucket_path, hive_partitions=True):
         """
         Initializes the S3Client
         Args:
@@ -21,6 +21,7 @@ class S3Client(object):
         """
         self.bucket_name = bucket_name
         self.bucket_path = bucket_path
+        self.hive_partitions = hive_partitions
         self.metadata_keys = [
             "org_name",
             "org_email",
@@ -43,7 +44,11 @@ class S3Client(object):
             report["report_metadata"]["begin_date"]
         )
         report_id = report["report_metadata"]["report_id"]
-        path_template = "{0}/{1}/year={2}/month={3:02d}/day={4:02d}/{5}.json"
+        if self.hive_partitions:
+            path_template = "{0}/{1}/year={2}/month={3:02d}/day={4:02d}/{5}.json"
+        else:
+            path_template = "{0}/{1}/{2}/{3:02d}/{4:02d}/{5}.json"
+            
         object_path = path_template.format(
             self.bucket_path,
             report_type,

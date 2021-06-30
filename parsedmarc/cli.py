@@ -84,6 +84,7 @@ def _main():
                 s3_client = s3.S3Client(
                     bucket_name=opts.s3_bucket,
                     bucket_path=opts.s3_path,
+                    hive_partitions=opts.s3_hive_partitions,
                 )
             except Exception as error_:
                 logger.error("S3 Error: {0}".format(error_.__str__()))
@@ -279,6 +280,7 @@ def _main():
                      smtp_message="Please see the attached DMARC results.",
                      s3_bucket=None,
                      s3_path=None,
+                     s3_hive_partitions=True,
                      log_file=args.log_file,
                      n_procs=1,
                      chunk_size=1
@@ -539,6 +541,8 @@ def _main():
                     opts.s3_path = opts.s3_path[:-1]
             else:
                 opts.s3_path = ""
+            if "hive_partitions" in s3_config:
+                opts.s3_hive_partitions = s3_config.getboolean("hive_partitions")
 
     logging.basicConfig(level=logging.WARNING)
     logger.setLevel(logging.WARNING)

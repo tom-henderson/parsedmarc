@@ -222,6 +222,7 @@ The full set of configuration options are:
 - ``s3``
     - ``bucket`` - str: The S3 bucket name
     - ``path`` - int: The path to upload reports to (Default: /)
+    - ``hive_partitions`` - bool: Use hive style partitions (Default: True)
 
 
 .. warning::
